@@ -27,7 +27,7 @@ public class MyDirectedGraph{
 	//private int mCoreSize;
 	private int k;
 	private String filename;
-	private Thread thread;
+	//private Thread thread;
 	private double pearsonsCorrelation;
 	
 	public MyDirectedGraph(DirectedSparseGraph<Node, Link> mGraph) {
