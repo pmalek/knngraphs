@@ -45,7 +45,7 @@
       <version>0.10</version>
     </dependency>
   </dependencies>
-     <build>
+  <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -55,6 +55,27 @@
           <source>1.7</source>
           <target>1.7</target>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>pl.wroc.pwr.patryk.Demo</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+            <goal>single</goal>
+            </goals>  
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
