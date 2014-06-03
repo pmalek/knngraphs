@@ -28,14 +28,18 @@ public class Demo {
 		String stringSave = br.readLine();
 		boolean saveGraphImage = stringSave.matches("[yY]");
 
+    long startTime = System.currentTimeMillis();
+
 		for (int j = 0; j < args.length; j++) {
 			filename = args[j];
 
 			GraphCalculations calculator = 
 					new GraphCalculations(filename, k, visualizations, saveGraphImage);
 			calculator.start();
-
 		}
+
+    long endTime = System.currentTimeMillis();
+    System.out.println("\n\nTime: " + (endTime - startTime) / 1000f + "s.");
 
 	}
 }

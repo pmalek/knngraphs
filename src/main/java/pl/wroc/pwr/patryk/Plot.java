@@ -26,65 +26,97 @@ public class Plot extends JFrame{
 	private int height 	= 768;
 	private String xAxisLabel;
 	private String yAxisLabel;
+	private String firstDataSeriesLabel;
+	private String secondDataSeriesLabel;
 	
-	public Plot(String filename, String xAxisLabel, String yAxisLabel) {
+	public Plot(
+			String filename, 
+			String xAxisLabel, 
+			String yAxisLabel,
+			String firstDataSeriesLabel,
+			String secondDataSeriesLabel) {
         super(filename);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(width - 10, height -40 );
         this.xAxisLabel = xAxisLabel;
         this.yAxisLabel = yAxisLabel;
+        this.firstDataSeriesLabel = firstDataSeriesLabel;
+        this.secondDataSeriesLabel = secondDataSeriesLabel;
     }
 	
 	@SuppressWarnings("unchecked")
     public void showGraph(
     		List<Integer> x, 
-    		List<Double> y, 
-    		List<Double>coefsOfVariation, 
+    		List<Double> firstDataSeries, 
+    		List<Double> secondDataSeries, 
     		boolean saveFile){
     	
-    	DataTable data = new DataTable(Integer.class, Double.class, Double.class);
-
-    	for (int i = 0; i < x.size(); i++) {
-			data.add(x.get(i), y.get(i), coefsOfVariation.get(i));
-		}
+    	DataTable data = null;
+    	if(secondDataSeries != null){
+    		data = new DataTable(Integer.class, Double.class, Double.class);
+        	for (int i = 0; i < x.size(); i++) {
+    			data.add(x.get(i), firstDataSeries.get(i), secondDataSeries.get(i));
+    		}    		
+    	}else{
+    		data = new DataTable(Integer.class, Double.class);
+        	for (int i = 0; i < x.size(); i++) {
+    			data.add(x.get(i), firstDataSeries.get(i));
+    		}   		
+    	}
     	
-    	DataSeries pearsonsSeries = new DataSeries("Pearsons Coefficient", data, 0, 1);
-    	DataSeries varianceSeries = new DataSeries("Coefficient of variation", data, 0, 2);
+    	DataSeries firstSeries = new DataSeries(firstDataSeriesLabel, data, 0, 1);
+    	DataSeries secondSeries = null;
+    	if (secondDataSeriesLabel != null)
+    		secondSeries = new DataSeries(secondDataSeriesLabel, data, 0, 2);
     	
-    	XYPlot plot = new XYPlot(pearsonsSeries, varianceSeries);
+    	XYPlot plot = null;
+    	if( secondSeries != null) 
+    		plot = new XYPlot(firstSeries, secondSeries);
+    	else 
+    		plot = new XYPlot(firstSeries);
   
     	// Draw a tick mark and a grid line every 10 units along x axis
     	int x_scale = 1;
     	if (x.size() > 20){
     		Collections.sort(x);
-    		x_scale = x.get(y.size()-1) / 20;
+    		x_scale = x.get(firstDataSeries.size()-1) / 20;
     	}
     	plot.getAxisRenderer(XYPlot.AXIS_X).setTickSpacing(x_scale);
     	// Draw a tick mark and a grid line every 20 units along y axis
-    	plot.getAxisRenderer(XYPlot.AXIS_Y).setTickSpacing(0.05);
+    	int y_scale = 1;
+    	List<Double> tempFirstSeries = firstDataSeries;
+    	if (firstDataSeries.size() > 20){
+    		Collections.sort(tempFirstSeries);
+    		y_scale = (int) (tempFirstSeries.get(tempFirstSeries.size()-1) / 20);
+    	}    	
+    	plot.getAxisRenderer(XYPlot.AXIS_Y).setTickSpacing(y_scale);
     	
     	LineRenderer lines1 = new DefaultLineRenderer2D();
     	lines1.setColor(new Color(0.0f, 0.3f, 1.0f, 0.3f));
-    	plot.setLineRenderer(pearsonsSeries, lines1);
+    	plot.setLineRenderer(firstSeries, lines1);
     	
-    	LineRenderer lines2 = new DefaultLineRenderer2D();
-    	lines2.setColor(new Color(0.0f, 0.0f, 0.0f, 0.3f));
-    	plot.setLineRenderer(varianceSeries, lines2);
+    	if( secondSeries != null ) {
+    		LineRenderer lines2 = new DefaultLineRenderer2D();
+        	lines2.setColor(new Color(0.0f, 0.0f, 0.0f, 0.3f));
+        	plot.setLineRenderer(secondSeries, lines2);	
+    	}
     	
     	PointRenderer points1 = new DefaultPointRenderer2D();
     	points1.setShape(new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0));
     	points1.setColor(new Color(0.0f, 0.3f, 1.0f, 0.3f));
-    	plot.setPointRenderer(pearsonsSeries, points1);
+    	plot.setPointRenderer(firstSeries, points1);
     	
-    	PointRenderer points2 = new DefaultPointRenderer2D();
-    	points2.setShape(new Ellipse2D.Double(-2.5, -2.5, 5.0, 5.0));
-    	points2.setColor(new Color(0.0f, 0.0f, 0.0f, 0.3f));
-    	plot.setPointRenderer(varianceSeries, points2);
-    	
+    	if( secondSeries != null ) {
+	    	PointRenderer points2 = new DefaultPointRenderer2D();
+	    	points2.setShape(new Ellipse2D.Double(-2.5, -2.5, 5.0, 5.0));
+	    	points2.setColor(new Color(0.0f, 0.0f, 0.0f, 0.3f));
+	    	plot.setPointRenderer(secondSeries, points2);
+    	}
+	    	
     	getContentPane().add(new InteractivePanel(plot));
     	//plot.getNavigator().setZoom(2f);
     	
-    	plot.getTitle().setText("k (" + x.get(0) + "," + x.get(y.size()-1) + 
+    	plot.getTitle().setText("k (" + x.get(0) + "," + x.get(firstDataSeries.size()-1) + 
     			") for " + x.size() + " graphs.");
     	plot.getAxisRenderer(XYPlot.AXIS_X).setLabel(xAxisLabel);
     	plot.getAxisRenderer(XYPlot.AXIS_Y).setLabel(yAxisLabel);

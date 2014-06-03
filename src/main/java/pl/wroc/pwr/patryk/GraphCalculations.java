@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.collections15.iterators.ArrayListIterator;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
@@ -39,6 +40,9 @@ public class GraphCalculations implements Runnable {
 		SummaryStatistics totalInDegreeStats = new SummaryStatistics();
 		totalInDegreeStats.addValue(0); // without this totalInDegreeStats.getMax() is NaN
 		List<Double> coefsOfVariation = new ArrayList<Double>();
+		List<Double> standardDeviationList = new ArrayList<Double>();
+		List<Double> maxIndegreeList = new ArrayList<Double>();
+		
 
 		for (int i = 1; i <= k; i++) {
 			SummaryStatistics inDegreeStats = new SummaryStatistics();
@@ -68,13 +72,17 @@ public class GraphCalculations implements Runnable {
 			
 			// X values for plot drawing
 			x.add(i);
-			double coefficientOfVariation = inDegreeStats.getStandardDeviation()/inDegreeStats.getMean();
+			double standardDeviation = inDegreeStats.getStandardDeviation();
+			double coefficientOfVariation = standardDeviation/inDegreeStats.getMean();
 			coefsOfVariation.add(coefficientOfVariation);
 
 			if (visualizations) {
 				new Visualize(graph.getGraph(), "k = " + i
 						+ ",pearsonsCorrelation = " + pearsonsCorrelation);
 			}
+			
+			maxIndegreeList.add(inDegreeStats.getMax());
+			standardDeviationList.add(standardDeviation);
 			
 			// stats
 			if( inDegreeStats.getMax() > totalInDegreeStats.getMax() ){
@@ -101,8 +109,29 @@ public class GraphCalculations implements Runnable {
 		System.out.println("\nMax in-degree for k=" + totalKMaxInDegree + ", max_in-degree=" + totalInDegreeStats.getMax());
 		System.out.println();
 		
-		Plot plot = new Plot(filename, "K", "Pearson's correlation coefficient");
+		Plot plot = new Plot(
+				filename, 
+				"K", 
+				"Pearson's correlation coefficient",
+				"Pearsons Coefficient",
+				"Coefficient of variation");
 		plot.showGraph(x, pearsonsValues, coefsOfVariation, saveGraphImage);
+		
+		Plot standardDeviationOfInDegreePlot = new Plot(
+				filename,
+				"K",
+				"Standard deviation of in-degree",
+				"Standard deviation of in-degree",
+				null);
+		standardDeviationOfInDegreePlot.showGraph(x, standardDeviationList, null, false);
+		
+		Plot maxInDegreePlot = new Plot(
+				filename,
+				"K",
+				"Max in-degree",
+				"Max in-degree",
+				null);
+		maxInDegreePlot.showGraph(x, maxIndegreeList, null, false);
 	}
 	
 	public void start(){
