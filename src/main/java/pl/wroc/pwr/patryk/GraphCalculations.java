@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.collections15.iterators.ArrayListIterator;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
