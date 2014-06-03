@@ -1,34 +1,37 @@
 package pl.wroc.pwr.patryk;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 
 public class GraphCalculations implements Runnable {
 
+	private String filepath;
 	private String filename;
 	private int k;
 	private boolean visualizations;
 	private boolean saveGraphImage;
 	private Thread thread;
 	
-	public GraphCalculations(String filename, int k, boolean visualizations,
+	public GraphCalculations(String filepath, int k, boolean visualizations,
 			boolean saveGraphImage) {
-		this.filename = filename;
+		this.filepath = filepath;
+		this.filename = Paths.get(filepath).getFileName().toString();
 		this.k = k;
 		this.visualizations = visualizations;
 		this.saveGraphImage = saveGraphImage;
-		this.thread = new Thread(this, filename);
+		this.thread = new Thread(this, filepath);
 	}
 
 	@Override
 	public void run() {
 		System.out.println("\n************************************");
-		System.out.println("filename \"" + filename + "\"");
+		System.out.println("filepath \"" + filepath + "\"");
 		System.out.println();
 		
 		List<Double> pearsonsValues = new ArrayList<Double>();
@@ -36,17 +39,17 @@ public class GraphCalculations implements Runnable {
 
 		long startTime = System.currentTimeMillis();
 		int totalKMaxInDegree = 0;
-		SummaryStatistics totalInDegreeStats = new SummaryStatistics();
+		DescriptiveStatistics totalInDegreeStats = new DescriptiveStatistics();
+		DescriptiveStatistics skewnessStats = new DescriptiveStatistics();
 		totalInDegreeStats.addValue(0); // without this totalInDegreeStats.getMax() is NaN
 		List<Double> coefsOfVariation = new ArrayList<Double>();
 		List<Double> standardDeviationList = new ArrayList<Double>();
 		List<Double> maxIndegreeList = new ArrayList<Double>();
-		
 
 		for (int i = 1; i <= k; i++) {
-			SummaryStatistics inDegreeStats = new SummaryStatistics();
+			DescriptiveStatistics inDegreeStats = new DescriptiveStatistics();
 
-			MyDirectedGraph graph = new MyDirectedGraph(i, filename);
+			MyDirectedGraph graph = new MyDirectedGraph(i, filepath);
 			graph.loadFile();
 
 			// graph.printGraph();
@@ -71,9 +74,12 @@ public class GraphCalculations implements Runnable {
 			
 			// X values for plot drawing
 			x.add(i);
+			
+			//stats added to containers
 			double standardDeviation = inDegreeStats.getStandardDeviation();
 			double coefficientOfVariation = standardDeviation/inDegreeStats.getMean();
 			coefsOfVariation.add(coefficientOfVariation);
+			skewnessStats.addValue(inDegreeStats.getSkewness());
 
 			if (visualizations) {
 				new Visualize(graph.getGraph(), "k = " + i
@@ -109,28 +115,44 @@ public class GraphCalculations implements Runnable {
 		System.out.println();
 		
 		Plot plot = new Plot(
-				filename, 
+				filename + ", Pearson coefficient",
 				"K", 
-				"Pearson's correlation coefficient",
-				"Pearsons Coefficient",
+				"Pearson correlation coefficient",
+				"Pearson correlation coefficient",
 				"Coefficient of variation");
-		plot.showGraph(x, pearsonsValues, coefsOfVariation, saveGraphImage);
+		plot.showGraph(x, pearsonsValues, coefsOfVariation, saveGraphImage,0);
 		
 		Plot standardDeviationOfInDegreePlot = new Plot(
-				filename,
+				filename + ", std deviation",
 				"K",
 				"Standard deviation of in-degree",
 				"Standard deviation of in-degree",
 				null);
-		standardDeviationOfInDegreePlot.showGraph(x, standardDeviationList, null, false);
+		standardDeviationOfInDegreePlot.showGraph(x, standardDeviationList, null, false,0);
 		
 		Plot maxInDegreePlot = new Plot(
-				filename,
+				filename + ", Max in-degree",
 				"K",
 				"Max in-degree",
 				"Max in-degree",
 				null);
-		maxInDegreePlot.showGraph(x, maxIndegreeList, null, false);
+		maxInDegreePlot.showGraph(x, maxIndegreeList, null, false,0);
+		
+		Plot skewnessPlot = new Plot(
+				filename + ", skewness of in-degree",
+				"K",
+				"Skewness of in-degree",
+				"Skewness of in-degree",
+				null);
+
+		List<Double> skewnessList = new ArrayList<Double>();
+		for (double d : skewnessStats.getValues()) {
+			skewnessList.add(d);
+		}
+		skewnessPlot.showGraph(
+				x, 
+				skewnessList,
+				null, false, 1);		
 	}
 	
 	public void start(){

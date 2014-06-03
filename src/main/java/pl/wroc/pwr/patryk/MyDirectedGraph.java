@@ -65,6 +65,7 @@ public class MyDirectedGraph{
 		String nextLine = "";
 		String pattern = "(\\d+)(\\.\\d+)?(;(\\d+)(\\.\\d+))?.*";
 		String datePattern = "(\\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01]));";
+		String questionMarkPattern = "\\?";
 		//Node[] core = new Node[mCoreSize];
 		
 		try {
@@ -73,6 +74,7 @@ public class MyDirectedGraph{
 			/*int _core = 0;*/
 			while( nextLine != null ){
 				nextLine = nextLine.replaceAll(datePattern, "");
+				nextLine = nextLine.replaceAll(questionMarkPattern, "0.0");
 				if( nextLine.matches(pattern) ){
 					Node vertex = new Node();
 					

@@ -28,6 +28,7 @@ public class Plot extends JFrame{
 	private String yAxisLabel;
 	private String firstDataSeriesLabel;
 	private String secondDataSeriesLabel;
+	private String filename;
 	
 	public Plot(
 			String filename, 
@@ -36,6 +37,7 @@ public class Plot extends JFrame{
 			String firstDataSeriesLabel,
 			String secondDataSeriesLabel) {
         super(filename);
+        this.filename = filename;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(width - 10, height -40 );
         this.xAxisLabel = xAxisLabel;
@@ -49,7 +51,8 @@ public class Plot extends JFrame{
     		List<Integer> x, 
     		List<Double> firstDataSeries, 
     		List<Double> secondDataSeries, 
-    		boolean saveFile){
+    		boolean saveFile,
+    		double xCrossPoint){
     	
     	DataTable data = null;
     	if(secondDataSeries != null){
@@ -83,11 +86,17 @@ public class Plot extends JFrame{
     	}
     	plot.getAxisRenderer(XYPlot.AXIS_X).setTickSpacing(x_scale);
     	// Draw a tick mark and a grid line every 20 units along y axis
-    	int y_scale = 1;
-    	List<Double> tempFirstSeries = firstDataSeries;
-    	if (firstDataSeries.size() > 20){
+		Double y_scale = 0.1;
+    	List<Double> tempFirstSeries = secondDataSeries == null ? firstDataSeries : secondDataSeries;
+    	//if (firstDataSeries.size() > 10){
+    	if (tempFirstSeries.get(tempFirstSeries.size()-1) > 2){
     		Collections.sort(tempFirstSeries);
-    		y_scale = (int) (tempFirstSeries.get(tempFirstSeries.size()-1) / 20);
+    		y_scale = (tempFirstSeries.get(tempFirstSeries.size()-1) / 20);
+    		System.out.println(firstDataSeriesLabel);
+    		System.out.println("\ntempFirstSeries.get(tempFirstSeries.size()-1) ;" + tempFirstSeries.get(tempFirstSeries.size()-1));
+    		y_scale = (double) Math.round(y_scale);
+    		//DecimalFormat df = new DecimalFormat("#.##");
+    		//y_scale = Double.parseDouble(df.format(y_scale));
     	}    	
     	plot.getAxisRenderer(XYPlot.AXIS_Y).setTickSpacing(y_scale);
     	
@@ -116,6 +125,26 @@ public class Plot extends JFrame{
     	getContentPane().add(new InteractivePanel(plot));
     	//plot.getNavigator().setZoom(2f);
     	
+		double smaller;
+		if ( xCrossPoint != 0 ) {
+			Collections.sort(firstDataSeries);
+			smaller = firstDataSeries.get(0);
+			if (secondDataSeries != null) {
+				Collections.sort(secondDataSeries);
+				/*			for (int i = 0; i < firstDataSeries.size(); i++) {
+				 System.out.println("firstDataSeries[i] " + firstDataSeries.get(i));
+				 }
+				 for (int i = 0; i < secondDataSeries.size(); i++) {
+				 System.out.println("secondDataSeries[i] " + secondDataSeries.get(i));
+				 }*/
+				if (secondDataSeries.get(0) < smaller)
+					smaller = secondDataSeries.get(0);
+			}
+			smaller *= 0.9;
+		}else{
+			smaller = xCrossPoint;
+		}
+		plot.getAxisRenderer(XYPlot.AXIS_X).setIntersection(smaller);
     	plot.getTitle().setText("k (" + x.get(0) + "," + x.get(firstDataSeries.size()-1) + 
     			") for " + x.size() + " graphs.");
     	plot.getAxisRenderer(XYPlot.AXIS_X).setLabel(xAxisLabel);
@@ -128,7 +157,7 @@ public class Plot extends JFrame{
 						.getInstance()
 						.get("image/svg+xml")
 						.write(plot,
-								new FileOutputStream(System.currentTimeMillis()
+								new FileOutputStream(filename + "_" + System.currentTimeMillis()
 										+ ".svg"), 1366, 768);
 			} catch (IOException e) {
 				e.printStackTrace();
