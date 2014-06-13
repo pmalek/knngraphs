@@ -98,7 +98,7 @@ public class MyDirectedGraph{
 			}
 			in.close();
 		} catch (Exception e) {
-			System.err.println("There was a problem with " + filename);
+			System.err.println("There was a problem with file: " + filename);
 			System.err.println(e.getMessage());
 			try {
 				in.close();
