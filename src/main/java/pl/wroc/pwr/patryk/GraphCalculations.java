@@ -86,8 +86,8 @@ public class GraphCalculations implements Runnable {
             skewnessStats.addValue(inDegreeStats.getSkewness());
 
             if (visualizations) {
-                new Visualize(graph.getGraph(), "k = " + i
-                        + ",pearsonsCorrelation = " + pearsonsCorrelation);
+                new Visualize(graph.getGraph(),
+                        "k = " + i + ",pearsonsCorrelation = " + pearsonsCorrelation);
             }
 
             maxIndegreeList.add(inDegreeStats.getMax());

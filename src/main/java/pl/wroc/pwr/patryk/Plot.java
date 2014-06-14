@@ -114,8 +114,8 @@ public class Plot extends JFrame {
         // x.get(firstDataSeries.size()-1) + ") for " + x.size() + " graphs.");
         plot.getAxisRenderer(XYPlot.AXIS_X).setLabel(xAxisLabel);
         plot.getAxisRenderer(XYPlot.AXIS_Y).setLabel(yAxisLabel);
+        plot.setLegendDistance(1);
         plot.setLegendVisible(true);
-
         if (saveFile) {
             try {
                 DrawableWriterFactory

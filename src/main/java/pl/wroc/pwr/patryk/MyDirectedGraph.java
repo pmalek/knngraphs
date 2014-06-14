@@ -81,7 +81,7 @@ public class MyDirectedGraph{
 					//iterate over all values in a row (split by ';')
 					for (String s : nextLine.split(";")) {
 						try {
-							vertex.addValue( Float.parseFloat(s) );
+							vertex.addValue( Double.parseDouble(s) );
 						} catch (NumberFormatException e) {
 							
 							e.printStackTrace();
