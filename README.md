@@ -39,3 +39,4 @@ After building the `.jar` you can use it by:
 java -jar target/knngraphs-1.0-SNAPSHOT-jar-with-dependencies.jar -k K file1.csv [file2.csv]
 ```
 
+![Example plot](readme_res/example_plot.svg)
