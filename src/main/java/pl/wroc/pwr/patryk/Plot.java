@@ -103,10 +103,10 @@ public class Plot extends JFrame {
         plot.getAxisRenderer(XYPlot.AXIS_X).setTickSpacing(x_scale);
 
         // Draw a tick mark and a grid line every  ?????
-        BigDecimal maxYBigDecimal = new BigDecimal(maxYMainPlot / 20);
+        BigDecimal yTickBigDecimal = new BigDecimal(maxYMainPlot / 20);
         int placesToRound = 1;
-        maxYBigDecimal = maxYBigDecimal.setScale(placesToRound, RoundingMode.CEILING);
-        plot.getAxisRenderer(XYPlot.AXIS_Y).setTickSpacing( maxYBigDecimal.doubleValue() );
+        yTickBigDecimal = yTickBigDecimal.setScale(placesToRound, RoundingMode.CEILING);
+        plot.getAxisRenderer(XYPlot.AXIS_Y).setTickSpacing( yTickBigDecimal.doubleValue() );
 
         for (int i = 0; i < currentDataSourceArray.length; i++) {
             LineRenderer lines = new DefaultLineRenderer2D();
@@ -128,14 +128,16 @@ public class Plot extends JFrame {
         plot.getAxis(XYPlot.AXIS_X).setMin(0);
         plot.getAxis(XYPlot.AXIS_X).setMax(x.get(x.size()-1) + 1);
         plot.getAxisRenderer(XYPlot.AXIS_Y).setLabel(yAxisLabel);
-        plot.getAxis(XYPlot.AXIS_Y).setMax(maxYMainPlot + 0.1*Math.abs(maxYMainPlot));
-        plot.getAxis(XYPlot.AXIS_Y).setMin(minYMainPlot - 0.1*Math.abs(minYMainPlot));
+        plot.getAxis(XYPlot.AXIS_Y).setMax(maxYMainPlot + 0.05*Math.abs(maxYMainPlot));
+        plot.getAxis(XYPlot.AXIS_Y).setMin(minYMainPlot - 0.05*Math.abs(maxYMainPlot));
 
         plot.setLegendDistance(2);
         plot.getLegend().setAlignmentX(1);
         Insets2D insets = new Insets2D.Double(30,60,30,30);
         plot.setInsets(insets);
         plot.setLegendVisible(true);
+        filename = filename.replace(" ", "_");
+        filename = filename.replace(",", "");
         if (saveFile) {
             try {
                 DrawableWriterFactory
