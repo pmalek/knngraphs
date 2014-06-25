@@ -132,20 +132,14 @@ public class GraphCalculations implements Runnable {
         mainPlotDataSeries.add(coefsOfVariation);
         mainPlotDataSeries.add(skewnessList);
 
-        double maxYMainPlot = 0.0;
-        for (ArrayList<Double> arrayList : mainPlotDataSeries) {
-            for (Double d : arrayList) {
-                if(d > maxYMainPlot)
-                    maxYMainPlot = d;
-            }
-        }
+
 
         Plot plot = new Plot(
                 filename + ", Pearson coefficient",
                 "K",
                 "Pearson correlation coefficient",
                 mainPlotLabels);
-        plot.showGraph(x, mainPlotDataSeries, maxYMainPlot, saveGraphImage, 0);
+        plot.showGraph(x, mainPlotDataSeries, saveGraphImage, 0);
 
 /*        List<String> stddevPlotLabels = new ArrayList<String>();
         stddevPlotLabels.add("Standard deviation of in-degree");

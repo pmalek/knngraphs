@@ -21,6 +21,7 @@ import de.erichseifert.gral.plots.lines.LineRenderer;
 import de.erichseifert.gral.plots.points.DefaultPointRenderer2D;
 import de.erichseifert.gral.plots.points.PointRenderer;
 import de.erichseifert.gral.ui.InteractivePanel;
+import de.erichseifert.gral.util.Insets2D;
 
 public class Plot extends JFrame {
 
@@ -54,11 +55,22 @@ public class Plot extends JFrame {
     public void showGraph(
             List<Integer> x,
             List<ArrayList<Double>> dataSeriesList,
-            double maxYValue,
             boolean saveFile,
             double xCrossPoint) {
 
         DataTable data = null;
+        
+        double maxYMainPlot = Double.NEGATIVE_INFINITY;
+        double minYMainPlot = Double.POSITIVE_INFINITY;
+        for (ArrayList<Double> arrayList : dataSeriesList) {
+            for (Double d : arrayList) {
+                if(d > maxYMainPlot)
+                    maxYMainPlot = d;
+                if(d < minYMainPlot)
+                    minYMainPlot = d;
+            }
+        }
+        
         // 1 more is for the X axis
         data  = new DataTable(1 + dataSeriesList.size(), Double.class);
         for (int i = 0; i < x.size(); i++) {
@@ -91,7 +103,7 @@ public class Plot extends JFrame {
         plot.getAxisRenderer(XYPlot.AXIS_X).setTickSpacing(x_scale);
 
         // Draw a tick mark and a grid line every  ?????
-        BigDecimal maxYBigDecimal = new BigDecimal(maxYValue / 20);
+        BigDecimal maxYBigDecimal = new BigDecimal(maxYMainPlot / 20);
         int placesToRound = 1;
         maxYBigDecimal = maxYBigDecimal.setScale(placesToRound, RoundingMode.CEILING);
         plot.getAxisRenderer(XYPlot.AXIS_Y).setTickSpacing( maxYBigDecimal.doubleValue() );
@@ -113,8 +125,16 @@ public class Plot extends JFrame {
         // plot.getTitle().setText("k (" + x.get(0) + "," +
         // x.get(firstDataSeries.size()-1) + ") for " + x.size() + " graphs.");
         plot.getAxisRenderer(XYPlot.AXIS_X).setLabel(xAxisLabel);
+        plot.getAxis(XYPlot.AXIS_X).setMin(0);
+        plot.getAxis(XYPlot.AXIS_X).setMax(x.get(x.size()-1) + 1);
         plot.getAxisRenderer(XYPlot.AXIS_Y).setLabel(yAxisLabel);
-        plot.setLegendDistance(1);
+        plot.getAxis(XYPlot.AXIS_Y).setMax(maxYMainPlot + 0.1*Math.abs(maxYMainPlot));
+        plot.getAxis(XYPlot.AXIS_Y).setMin(minYMainPlot - 0.1*Math.abs(minYMainPlot));
+
+        plot.setLegendDistance(2);
+        plot.getLegend().setAlignmentX(1);
+        Insets2D insets = new Insets2D.Double(30,60,30,30);
+        plot.setInsets(insets);
         plot.setLegendVisible(true);
         if (saveFile) {
             try {
