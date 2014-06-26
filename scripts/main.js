@@ -5,6 +5,7 @@ bespoke.from('article', {
   scale: true,
   progress: true,
   state: true,
+  touch: true,
   bullets: '.bullet',
   fx: {
     transition: "fall",

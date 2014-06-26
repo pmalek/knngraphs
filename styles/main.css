@@ -82,13 +82,13 @@ article.bespoke-parent {
   -webkit-align-items: center;
   align-items: center;
   text-align: center;
-  width: 1090px;
+  width: 1180px;
   height: 700px;
   position: absolute;
   top: 50%;
   margin-top: -350px;
   left: 50%;
-  margin-left: -545px;
+  margin-left: -590px;
   background: #e0e0e0;
   padding: 40px;
   -webkit-border-radius: 0;
@@ -110,11 +110,11 @@ article.bespoke-parent {
   }
 }
 .bespoke-before {
-  -webkit-transform: translateX(100px) translateX(-545px) rotateY(-90deg) translateX(-545px);
-  -moz-transform: translateX(100px) translateX(-545px) rotateY(-90deg) translateX(-545px);
-  -o-transform: translateX(100px) translateX(-545px) rotateY(-90deg) translateX(-545px);
-  -ms-transform: translateX(100px) translateX(-545px) rotateY(-90deg) translateX(-545px);
-  transform: translateX(100px) translateX(-545px) rotateY(-90deg) translateX(-545px);
+  -webkit-transform: translateX(100px) translateX(-590px) rotateY(-90deg) translateX(-590px);
+  -moz-transform: translateX(100px) translateX(-590px) rotateY(-90deg) translateX(-590px);
+  -o-transform: translateX(100px) translateX(-590px) rotateY(-90deg) translateX(-590px);
+  -ms-transform: translateX(100px) translateX(-590px) rotateY(-90deg) translateX(-590px);
+  transform: translateX(100px) translateX(-590px) rotateY(-90deg) translateX(-590px);
 }
 @media print {
   .bespoke-before {
@@ -126,11 +126,11 @@ article.bespoke-parent {
   }
 }
 .bespoke-after {
-  -webkit-transform: translateX(-100px) translateX(545px) rotateY(90deg) translateX(545px);
-  -moz-transform: translateX(-100px) translateX(545px) rotateY(90deg) translateX(545px);
-  -o-transform: translateX(-100px) translateX(545px) rotateY(90deg) translateX(545px);
-  -ms-transform: translateX(-100px) translateX(545px) rotateY(90deg) translateX(545px);
-  transform: translateX(-100px) translateX(545px) rotateY(90deg) translateX(545px);
+  -webkit-transform: translateX(-100px) translateX(590px) rotateY(90deg) translateX(590px);
+  -moz-transform: translateX(-100px) translateX(590px) rotateY(90deg) translateX(590px);
+  -o-transform: translateX(-100px) translateX(590px) rotateY(90deg) translateX(590px);
+  -ms-transform: translateX(-100px) translateX(590px) rotateY(90deg) translateX(590px);
+  transform: translateX(-100px) translateX(590px) rotateY(90deg) translateX(590px);
 }
 @media print {
   .bespoke-after {
@@ -223,30 +223,31 @@ body {
   font-size: 28px;
   color: #424242;
   background: #e0e0e0;
-  margin-bottom: 6px;
+  margin-bottom: 0.6em;
 }
 h1 {
   font-size: 60px;
   line-height: 74px;
   letter-spacing: -1px;
-  margin-bottom: 36px;
+  margin-bottom: 2em;
   color: #3a3a3a;
 }
 h2 {
-  font-size: 42px;
+  font-size: 46px;
   letter-spacing: -1px;
-  margin-bottom: 32px;
+  margin-bottom: 2em;
   color: #3a3a3a;
 }
 h3 {
   font-size: 34px;
-  margin-bottom: 28px;
+  margin-bottom: 2em;
   color: #3a3a3a;
 }
 h4 {
   font-size: 30px;
   font-weight: normal;
-  margin-bottom: 28px;
+  line-height: 1.5em;
+  margin-bottom: 1em;
   color: #424242;
 }
 hr {
@@ -255,10 +256,10 @@ hr {
 }
 ul {
   list-style: none;
-  margin-bottom: 30px;
+  margin-bottom: 2em;
 }
 li {
-  margin-bottom: 12px;
+  line-height: 1.6em;
   text-align: left;
 }
 p {
@@ -327,13 +328,15 @@ ul.more-margin > li {
   padding: 0 0 50px 50px;
 }
 .octocat {
-  width: 60px;
+  width: 3em;
   position: relative;
-  top: 15px;
-  margin-top: -26px;
+  top: 1em;
+  margin-top: -1.6em;
 }
 .codeat {
-  margin-top: 100px;
+  position: absolute;
+  bottom: 2em;
+  right: 4em;
   font-size: 20px;
 }
 #example-csv {
