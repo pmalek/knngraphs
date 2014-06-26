@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Assortativity of kNN graphs</title>
+    <link rel="stylesheet" href="styles/styles.css"/>
+  </head>
+  <body>
+    <article>
+      <section>
+        <h1>Assortativity of kNN graphs</h1>
+        <p class="by">by<a href="https://github.com/pmalek">&nbsp;Patryk Małek</a></p>
+      </section>
+      <section>
+        <h2>Problem definition</h2>
+        <h4>
+          Whether there exists a correlation between <strong>k</strong>
+          parameter of kNN graphs (nodes' number of outgoing connections)
+          and its assortativity coefficient.
+        </h4>
+        <h4>Where assortativity is a tendency of nodes to connect to similar nodes.</h4>
+      </section>
+      <section>
+        <h2>Why is research of assortativity important?</h2>
+        <h4>
+          We can investigate whether real world datasets/networks tend to have
+          nodes more keen to connect to nodes alike them or rather connect to random nodes.
+        </h4>
+      </section>
+      <section>
+        <h2>Examples of (dis)assortative networks:</h2>
+        <ul>
+          <li class="bullet"></li>
+          <li class="bullet"><strong2>Social networks</strong2> - assortative
+            <ul>
+              <li>we connect with people that are alike us in terms of age, nationality, income, etc</li>
+            </ul>
+          </li>
+          <li class="bullet"><strong2>Internet</strong2> - (slightly) disassortative
+            <ul>
+              <li>Internet nodes can connect to any other node</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h3>One of received results via implemented solution</h3><img src="arrhythmia.csv_Pearson_coefficient_1403735520579.svg">
+      </section>
+      <section>
+        <h3>Pearson Correlation Coefficient calculation</h3>
+        <pre><code class="language-javascript">public double compute() {
+  int numLinks = g.getEdgeCount();
+  double[] degSrc = new double[numLinks];
+  double[] degDst = new double[numLinks];
+  
+  Collection<Link> links = g.getEdges();
+  Iterator<Link> lit = links.iterator();
+  int i = 0;
+  while (lit.hasNext()) {
+    Link l = lit.next();
+    Pair<Node> endPoints = g.getEndpoints(l);
+    degSrc[i] = g.degree(endPoints.getFirst());
+    degDst[i] = g.degree(endPoints.getSecond());
+    i++;
+  }
+  
+  PearsonsCorrelation pc = new PearsonsCorrelation();
+  return pc.correlation(degSrc, degDst);
+}
+</code></pre>
+      </section>
+      <section>
+        <h2>Follow-up work</h2>
+        <ul class="center">
+          <li class="bullet"></li>
+          <li class="bullet">
+            <h4>Take into account <strong2>different distance metrics</strong2>, e.g. manhattan</h4>
+          </li>
+          <li class="bullet">
+            <h4>Use <strong2>different measures</strong2> for Pearson's Correlation Coefficient, e.g. person's age</h4>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h1>Any questions?</h1>
+      </section>
+    </article>
+    <script src="scripts/scripts.js"></script>
+  </body>
+</html>
