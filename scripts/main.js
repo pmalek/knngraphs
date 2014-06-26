@@ -7,12 +7,10 @@ bespoke.from('article', {
   state: true,
   bullets: '.bullet',
   fx: {
-    direction: "horizontal",
     transition: "fall",
     reverse: true
   }
 });
-
 //document.addEventListener('keydown', function(e) {
 //  "use strict";
 //  var ONE_KEY_IN_ASCII = 48;

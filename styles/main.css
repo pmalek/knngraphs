@@ -16,11 +16,11 @@
   margin: 0;
 }
 article {
-  -webkit-transition: background 0.5s ease;
-  -moz-transition: background 0.5s ease;
-  -o-transition: background 0.5s ease;
-  -ms-transition: background 0.5s ease;
-  transition: background 0.5s ease;
+  -webkit-transition: background 0.6s ease;
+  -moz-transition: background 0.6s ease;
+  -o-transition: background 0.6s ease;
+  -ms-transition: background 0.6s ease;
+  transition: background 0.6s ease;
   display: none;
 }
 article.bespoke-parent {
@@ -43,11 +43,11 @@ article.bespoke-parent {
   }
 }
 .bespoke-slide {
-  -webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease, background 0.5s ease;
-  -moz-transition: -moz-transform 0.5s ease, opacity 0.5s ease, background 0.5s ease;
-  -o-transition: -o-transform 0.5s ease, opacity 0.5s ease, background 0.5s ease;
-  -ms-transition: -ms-transform 0.5s ease, opacity 0.5s ease, background 0.5s ease;
-  transition: transform 0.5s ease, opacity 0.5s ease, background 0.5s ease;
+  -webkit-transition: -webkit-transform 0.6s ease, opacity 0.6s ease, background 0.6s ease;
+  -moz-transition: -moz-transform 0.6s ease, opacity 0.6s ease, background 0.6s ease;
+  -o-transition: -o-transform 0.6s ease, opacity 0.6s ease, background 0.6s ease;
+  -ms-transition: -ms-transform 0.6s ease, opacity 0.6s ease, background 0.6s ease;
+  transition: transform 0.6s ease, opacity 0.6s ease, background 0.6s ease;
   -webkit-transform-origin: 50% 50% 0;
   -moz-transform-origin: 50% 50% 0;
   -o-transform-origin: 50% 50% 0;
@@ -89,7 +89,7 @@ article.bespoke-parent {
   margin-top: -350px;
   left: 50%;
   margin-left: -540px;
-  background: #eaeaea;
+  background: #e0e0e0;
   padding: 40px;
   -webkit-border-radius: 0;
   border-radius: 0;
@@ -210,7 +210,7 @@ article.bespoke-parent {
 }
 .emphatic,
 .emphatic .bespoke-slide {
-  background: #eaeaea;
+  background: #e0e0e0;
 }
 pre {
   padding: 12px !important;
@@ -222,7 +222,7 @@ body {
   font-family: helvetica, arial, sans-serif;
   font-size: 26px;
   color: #505050;
-  background: #eaeaea;
+  background: #fff;
   margin-bottom: 6px;
 }
 h1 {
@@ -322,4 +322,13 @@ ul.center > li {
   bottom: 0;
   right: 0;
   padding: 0 0 50px 50px;
+}
+.octocat {
+  width: 60px;
+  position: relative;
+  top: 15px;
+  margin-top: -20px;
+}
+.codeat {
+  margin-top: 100px;
 }
