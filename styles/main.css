@@ -333,11 +333,19 @@ ul.more-margin > li {
   top: 1em;
   margin-top: -1.6em;
 }
-.codeat {
+#code-info {
   position: absolute;
-  bottom: 2em;
-  right: 4em;
+  bottom: 1.5em;
+  right: 3em;
+}
+.codeat {
   font-size: 20px;
+  margin: 0;
+}
+.builtby {
+  position: relative;
+  right: -7em;
+  font-size: 13px;
 }
 #example-csv {
   margin-top: 60px;
