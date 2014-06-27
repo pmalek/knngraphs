@@ -2,7 +2,7 @@
 
 ## Presentation slides sources
 
-To build the presentation you will need [Node.js](http://nodejs.org) with [npm](https://www.npmjs.org/) and `bower`:
+To build the presentation you will need [Node.js](http://nodejs.org) with [npm](https://www.npmjs.org/) and [bower](http://bower.io/)
 
 ```sh
 $ npm install -g bower
@@ -16,7 +16,7 @@ $ bower install && npm install
 
 After that you can run:
 
-* ```$ grunt deploy``` to deploy to GitHub Pages,
+* ```$ grunt server``` to run a preview server with LiveReload,
 * ```$ grunt``` to compile static assets to 'public'.
 
 ---
