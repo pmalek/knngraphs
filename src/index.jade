@@ -1,0 +1,145 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    title Assortativity of kNN graphs
+
+    // build:css styles/styles.css
+    //- Check out 'src/bower_components/prism/themes/' for available themes
+    link(rel='stylesheet', type='text/css', href='bower_components/prism/themes/prism-tomorrow.css')
+    link(rel='stylesheet', type='text/css', href='styles/main.css')
+    link(rel='stylesheet', type='text/css', href='bower_components/bespoke-fx/src/animations.css')
+    // endbuild
+
+  body
+
+    article
+
+      section
+        h1 Assortativity of kNN graphs
+        p.by
+          |by
+          a(href="https://github.com/pmalek")&nbsp;Patryk Małek
+
+      section
+        h2 Problem definition
+        h4 Whether there exists a correlation between:
+        ul.bullet
+          li.circle <strong2>k parameter</strong2>  of kNN graphs (nodes' number of outgoing connections)
+          li.circle and its <strong2>assortativity coefficient</strong2>
+        .bullet
+          p Where assortativity is a tendency of nodes to connect to similar nodes
+          p (by similar we take into account in-degree of nodes) 
+
+      section
+        h2 Why is research of assortativity important?
+        h4
+          |We can investigate whether real world datasets/networks tend to have
+          |nodes more keen to connect to nodes alike them or rather connect to random nodes.
+
+      section
+        h2 Examples of (dis)assortative networks:
+        ul
+          li.bullet
+          li.bullet
+            |<strong2>Social networks, friendship</strong2> - assortative
+            ul
+              li we connect with people that are alike us in terms of age, nationality, income, etc
+          li.bullet <strong2>Internet</strong2> - (slightly) disassortative
+            ul
+              li Internet nodes can connect to any other node
+
+      section
+        h2 Research, solution implementation
+        .bullet
+          | Created solution calculating assortativity coefficient vs <strong2>k</strong2>
+          | parameter of kNN graph
+        .bullet.more-top-margin
+          | Example dataset 
+          code.language-markup .csv
+          | &nbsp;file, with 4 instances, each with 6 attributes
+          pre
+            code.language-javascript.
+              -10.29700756;-11.66678905;11.56066895;-2.08131576;4.04465580;4.08681488
+              2.13813472;3.50308204;-0.06407356;0.98330212;2.00134420;1.47868252
+              -2.19252634;0.83010828;0.45290488;1.08559155;1.96038878;-0.87715614
+              -0.01794434;0.44264925;0.62042207;-1.13598573;0.08879852;0.18696856
+        .bullet.more-top-margin
+          strong2 Euclidean 
+          | metric has been used to calculate distance between nodes
+
+      section
+        h3 Assortativity coefficient calculation
+        pre
+          code.language-javascript.
+            public double compute() {
+              int numLinks = g.getEdgeCount();
+              double[] degSrc = new double[numLinks];
+              double[] degDst = new double[numLinks];
+
+              Collection<Link> links = g.getEdges();
+              Iterator<Link> lit = links.iterator();
+              int i = 0;
+              while (lit.hasNext()) {
+                Link l = lit.next();
+                Pair<Node> endPoints = g.getEndpoints(l);
+                degSrc[i] = g.degree(endPoints.getFirst());
+                degDst[i] = g.degree(endPoints.getSecond());
+                i++;
+              }
+
+              PearsonsCorrelation pc = new PearsonsCorrelation();
+              return pc.correlation(degSrc, degDst);
+            }
+
+      section
+        h3 One of results received via implemented solution
+        img(src="arrhythmia.csv_Pearson_coefficient_1403735520579.svg")
+
+      section
+        h2 Results and conclusions:
+        ul.bullet.center.more-margin
+          li.bullet k-NN graphs tend to be <strong2>dissasortative</strong2> or show no assortative mixing for small <strong2>k</strong2> (k = 1)
+          li.bullet k-NN graphs tend to be <strong2>assortative</strong2> for large <strong2>k</strong2>
+          li.bullet Assortativity for large <strong2>k</strong2> occurs regardless of hubness phenomena
+
+      section
+        h2 Follow-up work
+        ul.center
+          li.bullet
+          li.bullet: h4 Take into account <strong2>different distance metrics</strong2>, e.g. manhattan
+          li.bullet: h4 Use <strong2>different measures</strong2> for Pearson's Correlation Coefficient, e.g. person's age
+
+      section
+        h1 Any questions?
+        #code-info
+          p.codeat
+            | Code available at
+            br
+            img(src="octocat.svg",class="octocat")
+            | &nbsp;
+            a(href="https://github.com/pmalek/knngraphs") github.com/pmalek/knngraphs
+          .builtby
+            | Built with&nbsp;
+            a(href="https://github.com/markdalgleish/bespoke.js") bespoke.js
+
+    // build:js scripts/scripts.js
+    script(src='bower_components/bespoke.js/dist/bespoke.min.js')
+    script(src='bower_components/bespoke-keys/dist/bespoke-keys.min.js')
+    script(src='bower_components/bespoke-scale/dist/bespoke-scale.min.js')
+    script(src='bower_components/bespoke-progress/dist/bespoke-progress.min.js')
+    script(src='bower_components/bespoke-state/dist/bespoke-state.min.js')
+    script(src='bower_components/bespoke-fx/libs/modernizr/modernizr.custom.js')
+    script(src='bower_components/bespoke-fx/dist/bespoke-fx.min.js')
+    script(src='bower_components/bespoke-bullets/dist/bespoke-bullets.min.js')
+    script(src='bower_components/bespoke-touch/dist/bespoke-touch.min.js')
+    //bespoke-secondary - notes plugin, press 't' on slides to open window with slides
+    //script(src='bower_components/bespoke-convenient/dist/bespoke-convenient.min.js')
+    //script(src='bower_components/bespoke-jumpy/dist/bespoke-jumpy.min.js')
+    //script(src='bower_components/bespoke-indexfinger/dist/bespoke-indexfinger.min.js')
+    //script(src='bower_components/bespoke-secondary/dist/bespoke-secondary.min.js')
+    // --
+    script(src='bower_components/prism/prism.js')
+    script(src='scripts/main.js')
+    // endbuild
